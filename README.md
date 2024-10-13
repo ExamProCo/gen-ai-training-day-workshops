@@ -24,10 +24,9 @@
   - Multi-turn with Converse API
 
 - `004.ipynb`
+  - reAct Reasoning
   - Tool Use
   - Gaurd Rails
-  - reAct Reasoning
-  - Reflection Reasoning
   
 - `005.ipynb`
   - Generate a frontend using Gradio
