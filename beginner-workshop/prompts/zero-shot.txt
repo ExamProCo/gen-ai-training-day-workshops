@@ -1,0 +1,3 @@
+Human: 
+Sulfuric acid reacts with sodium chloride, and gives <chemical1>_____</chemical1> and <chemical2>_____</chemical2>:
+Assistant:

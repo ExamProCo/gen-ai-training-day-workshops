@@ -1,0 +1,13 @@
+#!/usr/bin/env python
+
+import redis
+
+# Connect to Redis
+client = redis.StrictRedis(host='localhost', port=6379, db=0)
+
+# Set a key-value pair
+client.set('test_key', 'Hello Redis!')
+
+# Retrieve the value
+value = client.get('test_key')
+print(value.decode('utf-8'))
