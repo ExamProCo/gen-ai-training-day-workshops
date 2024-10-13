@@ -22,16 +22,17 @@
   - Multi-turn Conversation
   - Multi-turn with Invoke Model
   - Multi-turn with Converse API
-  - Multi-turn with Converse API Streaming
-  
 
-  - Converse API
-  - Tool User
+- `004.ipynb`
+  - Tool Use
+  - Gaurd Rails
+  - reAct Reasoning
+  - Reflection Reasoning
   
-
-  - reACT Reasoning
-  - simple Reflection Reasoning
-  - Generate a frontend
+- `005.ipynb`
+  - Generate a frontend using Gradio
+  - Generate a frontend using Streamlit
+  - Generate a frontend using v0
 
 ## Setup
 
