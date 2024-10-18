@@ -2,7 +2,7 @@
 
 ## Beginner Workshop
 
-- `001.ipynb`
+- `001.ipynb` (10 mins)
   - Boto3 Client
   - Zero-Shot
   - Single Turn Conversation
@@ -11,24 +11,28 @@
     - Amazon Titan Text Express V1 
     - Claude Haiku 3
   - Load Local Files
-    - Use Amazon Developer Q to generate function
+    - Use Amazon Q Developer to generate function
 
-- `002.ipynb`
+- `002.ipynb` (10 mins)
   - Few-Shot
   - In-Context Learning
   - Packaging Function
 
-- `003.ipynb`
+- `003.ipynb` (30 mins)
   - Multi-turn Conversation
   - Multi-turn with Invoke Model
   - Multi-turn with Converse API
+  - Session or Chat History Management (Knowledgebase)
+  - NOTES:
+    - Message History (how is the conversation being chained)
+    - Summarization (what happens if hte message history gets too long?)
 
-- `004.ipynb`
+- `004.ipynb` (30 mins)
   - reAct Reasoning
   - Tool Use
   - Gaurd Rails
   
-- `005.ipynb`
+- `005.ipynb` (10 mins)
   - Generate a frontend using Gradio
   - Generate a frontend using Streamlit
   - Generate a frontend using v0
