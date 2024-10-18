@@ -1,0 +1,117 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFormation template to deploy an EC2 instance running Redis using SSM for management, and create a Security Group for SageMaker Studio to access Redis.
+
+Parameters:
+  InstanceType:
+    Description: EC2 instance type
+    Type: String
+    Default: t3.micro
+    AllowedValues:
+      - t2.micro
+      - t3.micro
+      - t4g.micro
+    ConstraintDescription: must be a valid EC2 instance type.
+
+  VPCId:
+    Type: AWS::EC2::VPC::Id
+    Description: VPC ID where the instance will be deployed
+
+  SubnetId:
+    Type: AWS::EC2::Subnet::Id
+    Description: Subnet ID where the instance will be deployed
+
+  ImageId:
+    Description: AMI ID for the EC2 instance
+    Type: String
+    ConstraintDescription: Must be a valid AMI ID
+
+Resources:
+  # Create a Security Group for the EC2 Redis Instance
+  RedisSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable Redis access on port 6379
+      VpcId: !Ref VPCId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0  # Allow SSH access from anywhere (adjust as needed)
+        - IpProtocol: tcp
+          FromPort: 6379
+          ToPort: 6379
+          SourceSecurityGroupId: !Ref SageMakerSecurityGroup  # Allow access from SageMaker Security Group
+
+  # Create a Security Group for SageMaker Studio
+  SageMakerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security Group for SageMaker Studio to access Redis
+      VpcId: !Ref VPCId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0  # Allow HTTPS (adjust as needed for your use case)
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0  # Allow HTTPS (adjust as needed for your use case)          
+
+  RedisInstanceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      Path: "/"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+
+  RedisInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: "/"
+      Roles:
+        - !Ref RedisInstanceRole
+
+  RedisInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Ref InstanceType
+      SubnetId: !Ref SubnetId
+      SecurityGroupIds:
+        - !Ref RedisSecurityGroup
+      IamInstanceProfile: !Ref RedisInstanceProfile
+      ImageId: !Ref ImageId
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          yum update -y
+          yum install -y gcc make
+          wget http://download.redis.io/redis-stable.tar.gz
+          tar xvzf redis-stable.tar.gz
+          cd redis-stable
+          make
+          make install
+          redis-server --daemonize yes
+      Tags:
+        - Key: Name
+          Value: RedisServer
+
+Outputs:
+  InstanceId:
+    Description: The Instance ID of the Redis server
+    Value: !Ref RedisInstance
+
+  RedisServerPublicIP:
+    Description: Public IP address of the Redis server
+    Value: !GetAtt RedisInstance.PublicIp
+
+  SageMakerSecurityGroupId:
+    Description: The Security Group ID for SageMaker Studio
+    Value: !Ref SageMakerSecurityGroup
