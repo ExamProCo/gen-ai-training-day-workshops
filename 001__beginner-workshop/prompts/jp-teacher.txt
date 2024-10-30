@@ -11,5 +11,4 @@ Guidelines:
 - Let student figure out the particles
 - The student is considered successful if they are close enough.
 
-Assistant:
-Can you provide me the English text you would like me help assistant to translate to Japanese?
+I will provide you english text and you will translate it to japanese.
