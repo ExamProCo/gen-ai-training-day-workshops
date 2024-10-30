@@ -17,7 +17,8 @@ def get_weather(location):
   weather_data = {
     "New York": {"temperature": 22, "condition": "Sunny"},
     "London": {"temperature": 15, "condition": "Cloudy"},
-    "Tokyo": {"temperature": 28, "condition": "Rainy"}
+    "Tokyo": {"temperature": 28, "condition": "Rainy"},
+    "Toronto": {"temperature":-20, "condition": "Brr... Cold"}
   }
   return weather_data.get(location, {"temperature": 20, "condition": "Unknown"})
 
