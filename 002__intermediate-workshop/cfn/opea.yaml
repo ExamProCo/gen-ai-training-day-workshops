@@ -1,0 +1,115 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Deploy ChatQnA to an EC2 instance.
+Parameters:
+  InstanceType:
+  
+    Type: String
+    Default: m7i.4xlarge
+  HFAPIKey:
+    Description: Your Hugging Face API token
+    Type: String
+    NoEcho: true
+
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+    Description: The VPC ID where the EC2 instance will be launched.
+
+Resources:
+
+  SSMforEC2Role:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: 'ec2.amazonaws.com'
+            Action: 'sts:AssumeRole'
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore'
+      Policies:
+        - PolicyName: 'ReadHFApiTokenParameter'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'ssm:GetParameter'
+                Resource: !Sub 'arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/huggingface/api_token'
+      RoleName: 'SSMforEC2'
+
+  SSMforEC2InstanceProfile:
+    Type: 'AWS::IAM::InstanceProfile'
+    Properties:
+      InstanceProfileName: 'SSMforEC2InstanceProfile'
+      Roles:
+        - !Ref 'SSMforEC2Role'
+
+  HFApiTokenParameter:
+    Type: 'AWS::SSM::Parameter'
+    Properties:
+      Name: '/huggingface/api_token'
+      Type: String
+      Value: !Ref HFAPIKey
+
+  EC2SecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: 'Allow HTTP traffic from the internet'
+      VpcId: !Ref 'VpcId'
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: '0.0.0.0/0'
+
+  ChatQnAEC2Instance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      InstanceType: !Ref InstanceType
+      ImageId: !FindInMap [RegionMap, !Ref 'AWS::Region', AMIID]
+      IamInstanceProfile: !Ref 'SSMforEC2InstanceProfile'
+      SecurityGroupIds:
+        - !Ref 'EC2SecurityGroup'
+      BlockDeviceMappings:
+        - DeviceName: '/dev/sda1'
+          Ebs:
+            VolumeSize: 80
+            VolumeType: gp2
+      UserData: !Base64 |
+        #!/bin/bash
+
+        sudo -u ubuntu bash -c "        
+          # Install AWS CLI v2
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+
+          # Clone Repo
+          mkdir -p ~/miniconda3
+          wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
+          bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+          rm ~/miniconda3/miniconda.sh
+          source ~/miniconda3/bin/activate
+          conda init --all          
+
+          conda create --name openvino python=3.10.0
+          conda activate openvino
+
+          conda install -c conda-forge tensorflow jupyterlab
+
+          jupyter lab --ip 0.0.0.0
+        EOF
+
+Mappings:
+
+  RegionMap:
+    us-east-1:
+      AMIID: 'ami-0866a3c8686eaeeba'
+
+Outputs:
+
+  EC2InstancePublicIP:
+    Description: Public IP address of the EC2 instance
+    Value: !GetAtt 'ChatQnAEC2Instance.PublicIp'
