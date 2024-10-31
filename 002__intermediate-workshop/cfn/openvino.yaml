@@ -47,8 +47,8 @@ Resources:
       VpcId: !Ref 'VpcId'
       SecurityGroupIngress:
         - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
+          FromPort: 8888
+          ToPort: 8888
           CidrIp: '0.0.0.0/0'
 
   ChatQnAEC2Instance:
