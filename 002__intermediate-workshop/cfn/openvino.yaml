@@ -2,17 +2,15 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: Deploy a JuypterLabs server
 
 Parameters:
-  HFAPIKey:
-    Description: Your Hugging Face API token
+  InstanceType:
+    Description: Intel Xeon 4 Scalable Processor
     Type: String
-    NoEcho: true
-
+    Default: m7i.4xlarge
   VpcId:
     Type: AWS::EC2::VPC::Id
     Description: The VPC ID where the EC2 instance will be launched.
 
 Resources:
-
   SSMforEC2Role:
     Type: 'AWS::IAM::Role'
     Properties:
@@ -42,14 +40,6 @@ Resources:
       InstanceProfileName: 'SSMforEC2InstanceProfile'
       Roles:
         - !Ref 'SSMforEC2Role'
-
-  HFApiTokenParameter:
-    Type: 'AWS::SSM::Parameter'
-    Properties:
-      Name: '/huggingface/api_token'
-      Type: String
-      Value: !Ref HFAPIKey
-
   EC2SecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
@@ -64,7 +54,7 @@ Resources:
   ChatQnAEC2Instance:
     Type: 'AWS::EC2::Instance'
     Properties:
-      InstanceType: 'm7i.4xlarge'
+      InstanceType: !Ref InstanceType
       ImageId: !FindInMap [RegionMap, !Ref 'AWS::Region', AMIID]
       IamInstanceProfile: !Ref 'SSMforEC2InstanceProfile'
       SecurityGroupIds:
@@ -84,27 +74,19 @@ Resources:
           sudo ./aws/install
 
           # Clone Repo
-          git clone https://github.com/opea-project/GenAIExamples.git
-          
-          # Install Docker
-          cd GenAIExamples/ChatQnA/docker_compose
-          chmod +x ./install_docker.sh
-          ./install_docker.sh
+          mkdir -p ~/miniconda3
+          wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
+          bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+          rm ~/miniconda3/miniconda.sh
+          source ~/miniconda3/bin/activate
+          conda init --all          
 
-          # Fix sudo for docker
-          sudo groupadd docker
-          sudo usermod -aG docker $USER
-          newgrp docker
+          conda create --name openvino python=3.10.0
+          conda activate openvino
 
-          # Set Envs
-          export HUGGINGFACEHUB_API_TOKEN=\$(aws ssm get-parameter --name /huggingface/api_token --with-decryption --query 'Parameter.Value' --output text)
-          export host_ip=$(hostname -I | awk '{print $1}')
-          export no_proxy="localhost"
-          chmod +x ./set_env.sh
-          source ./set_env.sh
+          conda install -c conda-forge tensorflow jupyterlab
 
-          # Start Docker
-          docker compose -f compose.yaml up -d
+          jupyter lab --ip 0.0.0.0
         EOF
 
 Mappings:
@@ -114,7 +96,6 @@ Mappings:
       AMIID: 'ami-0866a3c8686eaeeba'
 
 Outputs:
-
   EC2InstancePublicIP:
     Description: Public IP address of the EC2 instance
     Value: !GetAtt 'ChatQnAEC2Instance.PublicIp'
