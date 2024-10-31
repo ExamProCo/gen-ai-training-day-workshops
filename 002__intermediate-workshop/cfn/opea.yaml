@@ -2,7 +2,7 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: Deploy ChatQnA to an EC2 instance.
 Parameters:
   InstanceType:
-  
+    Description: Intel Xeon 4 Scalable Processor
     Type: String
     Default: m7i.4xlarge
   HFAPIKey:
