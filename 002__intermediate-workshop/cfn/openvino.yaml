@@ -51,7 +51,7 @@ Resources:
           ToPort: 8888
           CidrIp: '0.0.0.0/0'
 
-  ChatQnAEC2Instance:
+  Ec2Instance:
     Type: 'AWS::EC2::Instance'
     Properties:
       InstanceType: !Ref InstanceType
@@ -64,25 +64,7 @@ Resources:
           Ebs:
             VolumeSize: 80
             VolumeType: gp3
-      UserData: !Base64 |
-        #!/bin/bash
-
-        mkdir -p ~/miniconda3
-        wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
-        bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
-        rm ~/miniconda3/miniconda.sh
-        source ~/miniconda3/bin/activate
-        conda init --all          
-
-        conda create --name openvino python=3.10.0
-        conda activate openvino
-
-        conda install -c conda-forge tensorflow jupyterlab
-
-        jupyter lab --ip 0.0.0.0
-
 Mappings:
-
   RegionMap:
     us-east-1:
       AMIID: 'ami-0866a3c8686eaeeba'
@@ -90,4 +72,4 @@ Mappings:
 Outputs:
   EC2InstancePublicIP:
     Description: Public IP address of the EC2 instance
-    Value: !GetAtt 'ChatQnAEC2Instance.PublicIp'
+    Value: !GetAtt 'Ec2Instance.PublicIp'
