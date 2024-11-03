@@ -10,6 +10,5 @@ conda init --all
 conda create --name openvino python=3.10.0 -y
 conda activate openvino
 
-conda install -c conda-forge tensorflow jupyterlab -y
-
+conda install -c conda-forge tensorflow jupyterlab ffmpeg -y
 jupyter lab --ip 0.0.0.0
