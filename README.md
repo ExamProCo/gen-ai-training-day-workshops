@@ -11,21 +11,7 @@ https://www.awstrainingday.ca/
 
 ### Beginner Workshop
 
-- `001.ipynb` (10 mins)
-  - Boto3 Client
-  - Zero-Shot
-  - Single Turn Conversation
-  - Bedrock Runtime and InvokeModel
-  - Comparing Models
-    - Amazon Titan Text Express V1 
-    - Claude Haiku 3
-  - Load Local Files
-    - Use Amazon Q Developer to generate function
 
-- `002.ipynb` (10 mins)
-  - Few-Shot
-  - In-Context Learning
-  - Packaging Function
 
 - `003.ipynb` (30 mins)
   - Multi-turn Conversation
