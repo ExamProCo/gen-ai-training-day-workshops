@@ -28,7 +28,7 @@ def get_historical_fact():
     "On this day of Sept. 12th 1992, astronaut Mae Jemison became the first African American woman to fly in space, part of the STS-47 Spacelab J mission.",
     "On this day of Sept. 12th 1959 the TV series Bonanza premiered on NBC, and it became one of the longest-running westerns in broadcast history."
   ]
-  return {"09-12-2024": random.choice(facts)}
+  return {"2024-11-03": random.choice(facts)}
 
 weather_tools = [
   { "toolSpec": {
