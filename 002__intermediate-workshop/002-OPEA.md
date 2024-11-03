@@ -71,7 +71,7 @@ docker run hello-world
 Get your API key and set it:
 
 ```sh
-export HUGGINGFACEHUB_API_TOKEN="WARAWR""
+export HUGGINGFACEHUB_API_TOKEN="KEY"
 ```
 
 ## Setup Env Vars
