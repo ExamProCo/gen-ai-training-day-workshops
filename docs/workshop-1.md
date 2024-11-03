@@ -198,6 +198,39 @@ Sqlite will produce a single file representing your database, that allows you to
 
  For multi-turn conversations you want to use converse API because it standardize on the messages API format and it has additional functionality like tool use.
 
- ### Tip 5: Use Streaming for immediate feedback
+### Tip 5 ConverseAPI instance will remember chat history
 
- You can use the streaming API so that users can start seeing output response immediately. 
+With InvokeModel if you were to pass the same chat history with no changes it will just work.
+
+With ConverseAPI it will remember the conversation, so you'll need to progress the conversation.
+
+ ### Tip 6: Use Streaming for immediate feedback
+
+ You can use the streaming API so that users can start seeing output response immediately.
+
+ ## 04 Building an Agent
+
+ - `004.ipynb` (30 mins)
+  - reAct Reasoning
+  - Tool Use
+  - Gaurd Rails
+
+### Tip 1: What makes and Agent an agent is when it has agency
+
+When an agent can go beyond a multiple-turn conversation to take external action like:
+- Using a RAG (retriving data before it replies)
+- Decide to call external functions (tool use)
+- Self-reflect the conversation befor replying
+
+Then we are describing "agency", because its going beyond the confines of a simple convesration.
+
+ ## 05 Fast Prototyping Frontends
+
+ - `005.ipynb` (10 mins)
+  - Generate a frontend using Gradio
+  - Generate a frontend using Streamlit
+  - Generate a frontend using v0
+
+### Tip 1: Easy frameworks to get going
+
+There are frameworks that make it easy to develop a frontend website to serve your models UI, not something you would want for production.

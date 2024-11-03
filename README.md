@@ -10,27 +10,8 @@ https://www.awstrainingday.ca/
 ## Workshops Outline
 
 ### Beginner Workshop
-
-
-
-- `003.ipynb` (30 mins)
-  - Multi-turn Conversation
-  - Multi-turn with Invoke Model
-  - Multi-turn with Converse API
-  - Session or Chat History Management (Knowledgebase)
-  - NOTES:
-    - Message History (how is the conversation being chained)
-    - Summarization (what happens if hte message history gets too long?)
-
-- `004.ipynb` (30 mins)
-  - reAct Reasoning
-  - Tool Use
-  - Gaurd Rails
   
-- `005.ipynb` (10 mins)
-  - Generate a frontend using Gradio
-  - Generate a frontend using Streamlit
-  - Generate a frontend using v0
+
 
 ### Intermediate Workshop
 
