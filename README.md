@@ -1,5 +1,12 @@
 # Gen AI Training Day Workshop
 
+## What are these workshops for?
+
+These workshops were developed for in-person instructor-lead training.
+
+https://www.awstrainingday.ca/
+
+
 ## Workshops Outline
 
 ### Beginner Workshop
