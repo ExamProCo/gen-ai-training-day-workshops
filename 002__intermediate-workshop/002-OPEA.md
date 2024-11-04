@@ -158,3 +158,11 @@ curl http://$host_ip:8888/v1/chatqna \
     "messages": "What is the revenue of Nike in 2023?"
 }'
 ```
+
+## CFN EC2 - Gitpod
+
+-Deploy CFN Template
+
+```
+aws cloudformation deploy --template-file ./002__intermediate-workshop/cfn/opea.yaml --stack-name bayko-test2 --capabilities CAPABILITY_NAMED_IAM --parameter-overrides VpcId=vpc-c3be22b9 HFAPIKey=TESTTESTTEST123
+```

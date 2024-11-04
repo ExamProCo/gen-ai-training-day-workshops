@@ -5,10 +5,10 @@ Parameters:
     Description: Intel Xeon 4 Scalable Processor
     Type: String
     Default: m7i.4xlarge
-  #HFAPIKey:
-  #  Description: Your Hugging Face API token
-  #  Type: String
-  #  NoEcho: true
+  HFAPIKey:
+    Description: Your Hugging Face API token
+    Type: String
+    NoEcho: true
   VpcId:
     Type: AWS::EC2::VPC::Id
     Description: The VPC ID where the EC2 instance will be launched.
@@ -44,12 +44,12 @@ Resources:
       Roles:
         - !Ref 'SSMforEC2Role'
 
-  #HFApiTokenParameter:
-  #  Type: 'AWS::SSM::Parameter'
-  #  Properties:
-  #    Name: '/huggingface/api_token'
-  #    Type: String
-  #    Value: !Ref HFAPIKey
+  HFApiTokenParameter:
+    Type: 'AWS::SSM::Parameter'
+    Properties:
+      Name: '/huggingface/api_token'
+      Type: String
+      Value: !Ref HFAPIKey
 
   EC2SecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
@@ -58,12 +58,13 @@ Resources:
       VpcId: !Ref 'VpcId'
       SecurityGroupIngress:
         - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
+          FromPort: 8888
+          ToPort: 8888
           CidrIp: '0.0.0.0/0'
 
   ChatQnAEC2Instance:
     Type: 'AWS::EC2::Instance'
+    DependsOn: HFApiTokenParameter
     Properties:
       InstanceType: !Ref InstanceType
       ImageId: !FindInMap [RegionMap, !Ref 'AWS::Region', AMIID]
@@ -75,6 +76,27 @@ Resources:
           Ebs:
             VolumeSize: 80
             VolumeType: gp3
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash -x
+          sudo apt install unzip -y
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+          git clone https://github.com/opea-project/GenAIExamples.git
+          cd GenAIExamples/ChatQnA/docker_compose
+          chmod +x ./install_docker.sh
+          ./install_docker.sh
+          sudo groupadd docker
+          sudo usermod -aG docker $USER
+          newgrp docker
+          export HUGGINGFACEHUB_API_TOKEN=$(aws ssm get-parameter --name /huggingface/api_token --with-decryption --query 'Parameter.Value' --output text)
+          export host_ip=$(hostname -I | awk '{print $1}')
+          export no_proxy="localhost"
+          cd intel/cpu/xeon
+          chmod +x ./set_env.sh
+          source ./set_env.sh
+          docker compose -f compose.yaml up -d
 Mappings:
   RegionMap:
     us-east-1:

@@ -62,3 +62,17 @@ conda install -c conda-forge tensorflow jupyterlab
 ```sh
 jupyter lab --ip 0.0.0.0
 ```
+
+
+## CloudFormation EC2 - Gitpod
+
+- Configure AWS Creds
+```
+aws configure
+```
+
+- Deploy CFN Stack
+
+```
+aws cloudformation deploy --template-file ./002__intermediate-workshop/cfn/openvino.yaml --stack-name bayko-test --capabilities CAPABILITY_NAMED_IAM --parameter-overrides InstanceType=t3.medium VpcId=vpc-c3be22b9
+```
