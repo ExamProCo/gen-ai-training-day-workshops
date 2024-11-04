@@ -124,7 +124,7 @@ The easist way is load a local text file.
 
 There are more advanced ways like using Amazon Bedrock Prompt Management.
 
-### Tip 8. Single-Turn convesation is create for traditionals ML tasks 
+### Tip 8. Single-Turn conversation can be used to perform traditional ML tasks 
 
 A single-turn conversation returns a single response, and an LLM can serve the same purpose as traditional ML models that perform single outputs eg. Classification, Regression, Catagorization
 
