@@ -2,7 +2,7 @@
 
 Logged into the AWS Management Console.
 
-- We plan to do everything in `us-east-`
+- We plan to do everything in `us-west-2`
     - Different regions can have different model avaliablity and to ensure we have all avaliable models we are going to work in AWS's primary region.
 
 ## Cost Guestimation
