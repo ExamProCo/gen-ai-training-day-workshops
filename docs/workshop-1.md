@@ -89,6 +89,7 @@ For them to take affect you will need to restart your kernal, however any variab
 - bedrock (controlling infrastructure and settings of bedrock)
 - bedrock-runtime (invoking LLMs in bedrock)
 - bedrock-agent (working with Amanzon Bedrock Agent for a full agentic workflow)
+- bedrock-agent-runtime 
 
 [Search of Boto3 Bedrock clients](
 https://boto3.amazonaws.com/v1/documentation/api/1.35.6/search.html?q=bedrock&check_keywords=yes&area=default)
