@@ -78,7 +78,7 @@ Resources:
           conda activate openvino
 
           conda install -c conda-forge tensorflow jupyterlab ffmpeg -y
-          jupyter lab --no-browser --allow-root --ip 0.0.0.0
+          # jupyter lab --no-browser --allow-root --ip 0.0.0.0
 Mappings:
   RegionMap:
     us-east-1:
