@@ -166,3 +166,9 @@ curl http://$host_ip:8888/v1/chatqna \
 ```
 aws cloudformation deploy --template-file ./002__intermediate-workshop/cfn/opea.yaml --stack-name bayko-test2 --capabilities CAPABILITY_NAMED_IAM --parameter-overrides VpcId=vpc-c3be22b9 HFAPIKey=TESTTESTTEST123
 ```
+
+-Check UserData Script Completion via sessions manager
+
+```
+sudo tail -f -n 200 /var/log/cloud-init-output.log
+```

@@ -20,6 +20,10 @@ export HUGGINGFACEHUB_API_TOKEN=$(aws ssm get-parameter --name /huggingface/api_
 export host_ip=$(hostname -I | awk '{print $1}')
 export no_proxy="localhost"
 cd intel/cpu/xeon
+
+# Use llama model instead of neural chat
+sed -i 's/Intel/meta-llama/g' ./set_env.sh
+sed -i 's/neural-chat-7b-v3-3/Llama-3.2-1B-Instruct/g' ./set_env.sh
 chmod +x ./set_env.sh
 source ./set_env.sh
 
