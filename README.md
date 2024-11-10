@@ -30,7 +30,6 @@ https://www.awstrainingday.ca/
 - [AWS Setup](./docs/aws-setup.md)
 - [Hugging Face Setup](./docs/hf-setup.md)
 
-## Refernece Materials
+## Referneces
 
-These are other workshops or repositories that cover similar topics: 
-- https://github.com/aws-samples/amazon-bedrock-workshop
+- [Amazon Bedrock Workshops Slides](assets/amazon-bedrock-workshop.pdfamazon-bedrock-workshop.pdf)
