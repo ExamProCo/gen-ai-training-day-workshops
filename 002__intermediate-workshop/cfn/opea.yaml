@@ -35,12 +35,12 @@ Resources:
                 Action:
                   - 'ssm:GetParameter'
                 Resource: !Sub 'arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/huggingface/api_token'
-      RoleName: 'SSMforEC2'
+      RoleName: !Sub SSMforEC2-${AWS::StackName}
 
   SSMforEC2InstanceProfile:
     Type: 'AWS::IAM::InstanceProfile'
     Properties:
-      InstanceProfileName: 'SSMforEC2InstanceProfile'
+      InstanceProfileName: !Sub SSMforEC2InstanceProfile-${AWS::StackName}
       Roles:
         - !Ref 'SSMforEC2Role'
 
