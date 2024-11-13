@@ -1,9 +1,19 @@
-## Specs
+# Specs
 
 - m7i.xlarge
 - 50 GB
 - SSMEC2Role
 - open port 8888 for your IP address
+
+# Setting up  OpenVino on EC2 Instance with CFN
+
+```sh
+sudo su - root
+conda activate openvino
+jupyter lab --no-browser --allow-root --ip 0.0.0.0
+```
+
+# Manually Setting up OpenVino on EC2 Instance
 
 ## Switch Users
 
