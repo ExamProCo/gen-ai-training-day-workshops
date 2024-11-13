@@ -101,7 +101,7 @@ If you read the documentation or model card of an LLM. They will describe the be
 - Amazon Titan eg. `{{double brackets}}`
 - Anthropic Claude eg. `<xml>tags</xml>`
 
-### Tip 6: Invoke Model has different body parameters and ouputs for different models.
+### Tip 6: Invoke Model has different body parameters and outputs for different models.
 
 If you compare 
 - Titan Express
