@@ -32,4 +32,5 @@ https://www.awstrainingday.ca/
 
 ## Referneces
 
-- [Amazon Bedrock Workshops Slides](assets/amazon-bedrock-workshop.pdfamazon-bedrock-workshop.pdf)
+- [Du'An's Amazon Bedrock Workshops Slides](assets/amazon-bedrock-workshop.pdfamazon-bedrock-workshop.pdf)
+- [Rola's GenAI Introduction](assets/gen-ai-intro.pdf)
