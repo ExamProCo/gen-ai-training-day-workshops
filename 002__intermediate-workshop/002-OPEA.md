@@ -152,7 +152,7 @@ docker logs TGI_SERVICE_ID
 ## Test Service
 
 ```sh
-curl http://$host_ip:8888/v1/chatqna \
+curl http://0.0.0.0:8888/v1/chatqna \
 -H "Content-Type: application/json" \
 -d '{
     "messages": "What is the revenue of Nike in 2023?"
@@ -172,3 +172,7 @@ aws cloudformation deploy --template-file ./002__intermediate-workshop/cfn/opea.
 ```
 sudo tail -f -n 200 /var/log/cloud-init-output.log
 ```
+
+https://github.com/opea-project/GenAIExamples/tree/main/ChatQnA
+
+https://github.com/opea-project/GenAIExamples/tree/main/ChatQnA
